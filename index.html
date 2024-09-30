@@ -232,6 +232,48 @@
             box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
         }
 
+        /* 全景图和VR部分 */
+        .panoramas {
+            padding: 60px 20px;
+            background-color: #ffffff;
+        }
+
+        .panoramas h2 {
+            text-align: center;
+            font-family: 'Montserrat', sans-serif;
+            font-size: 32px;
+            margin-bottom: 40px;
+            color: #2c3e50;
+        }
+
+        .panoramas-container {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 20px;
+            justify-content: center;
+        }
+
+        .panoramas-container iframe {
+            width: 560px;
+            height: 315px;
+            border: none;
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        .panoramas-container iframe:hover {
+            transform: scale(1.03);
+            box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+        }
+        .panoramas a{
+            text-align: center;
+            font-family: 'Montserrat', sans-serif;
+            font-size: 32px;
+            margin-bottom: 40px;
+            color: #2c3e50;
+        }
+
         /* 页脚部分 */
         footer {
             background-color: #2c3e50;
@@ -308,6 +350,7 @@
             <a href="#about">About me</a>
             <a href="#gallery">Photography</a>
             <a href="#videos">Video</a>
+            <a href="#panoramas">Panorama&VR</a>
             <a href="#contact">Contact me</a>
         </nav>
     </header>
@@ -384,6 +427,18 @@
                 <img src="./photo/19.webp" alt="photo work19">
                 <div class="gallery-caption">Summer of Chongqing University</div>
             </div>
+            <div class="gallery-item" onclick="openModal('./photo/25.webp')">
+                <img src="./photo/25.webp" alt="photo work25">
+                <div class="gallery-caption">Hefei University of Technology</div>
+            </div>
+            <div class="gallery-item" onclick="openModal('./photo/26.webp')">
+                <img src="./photo/26.webp" alt="photo work26">
+                <div class="gallery-caption">Symmetry</div>
+            </div>
+            <div class="gallery-item" onclick="openModal('./photo/27.webp')">
+                <img src="./photo/27.webp" alt="photo work27">
+                <div class="gallery-caption">Chongqing University</div>
+            </div>
         </div>
         <h3>Landscape&Nature</h3>
         <div class="gallery-grid">
@@ -450,6 +505,13 @@
                 allowfullscreen="true"></iframe>
             <iframe src="//player.bilibili.com/player.html?bvid=BV1sk4y1g7oT&page=1&autoplay=0" scrolling="no"
                 allowfullscreen="true"></iframe>
+        </div>
+    </section>
+
+    <section class="panoramas" id="panoramas">
+        <h2>Panorama&VR</h2>
+        <div class="video-container">
+            <a href="https://georgeghl.github.io/StaticImageWebsite/MyPanoramaViewer/">Click here <br> Jump to Panorama VR Site</a>
         </div>
     </section>
 
