@@ -1,9 +1,11 @@
 <!DOCTYPE html>
 <html lang="zh-CN">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="description" content="Personal photography exhibition - Inspired by linksphotograph(Ji Changyuan) and Hamada Hideaki">
+    <meta name="description"
+        content="Personal photography exhibition - Inspired by linksphotograph(Ji Changyuan) and Hamada Hideaki">
     <title>Photography - George Harvey Lawrence</title>
     <link href="./static/css/css2.css" rel="stylesheet">
     <link rel="stylesheet" href="./static/css/all.min.css">
@@ -14,16 +16,19 @@
             margin: 0;
             padding: 0;
         }
+
         body {
             font-family: 'Roboto', sans-serif;
             background-color: #fafafa;
             color: #333;
             line-height: 1.6;
         }
+
         a {
             color: inherit;
             text-decoration: none;
         }
+
         img {
             max-width: 100%;
             display: block;
@@ -40,22 +45,26 @@
             position: sticky;
             top: 0;
             z-index: 1000;
-            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
         }
+
         header h1 {
             font-family: 'Montserrat', sans-serif;
             font-size: 28px;
             color: #2c3e50;
         }
+
         nav {
             display: flex;
             gap: 20px;
         }
+
         nav a {
             font-weight: 600;
             color: #555;
             transition: color 0.3s ease;
         }
+
         nav a:hover {
             color: #e74c3c;
         }
@@ -66,9 +75,12 @@
             padding: 60px 20px;
             background-color: #ffffff;
             display: flex;
-            flex-direction: column; /* 设置为列方向 */
-            align-items: center; /* 让内容居中对齐 */
+            flex-direction: column;
+            /* 设置为列方向 */
+            align-items: center;
+            /* 让内容居中对齐 */
         }
+
         .bio img {
             border-radius: 50%;
             width: 150px;
@@ -77,12 +89,14 @@
             margin-bottom: 20px;
             border: 4px solid #e74c3c;
         }
+
         .bio h2 {
             font-family: 'Montserrat', sans-serif;
             font-size: 32px;
             margin-bottom: 10px;
             color: #2c3e50;
         }
+
         .bio p {
             font-size: 18px;
             color: #7f8c8d;
@@ -95,6 +109,7 @@
             padding: 60px 20px;
             background-color: #f9f9f9;
         }
+
         .gallery h2 {
             text-align: center;
             font-family: 'Montserrat', sans-serif;
@@ -102,32 +117,52 @@
             margin-bottom: 40px;
             color: #2c3e50;
         }
+
+        .gallery h3 {
+            text-align: center;
+            font-family: 'Montserrat', sans-serif;
+            font-size: 20px;
+            margin-bottom: 30px;
+            margin-top: 30px;
+            color: #2c3e50;
+        }
+
         .gallery-grid {
             display: grid;
-            grid-template-columns: repeat(4, 1fr); /* 每行展示4张图片 */
+            grid-template-columns: repeat(4, 1fr);
+            /* 每行展示4张图片 */
             gap: 20px;
         }
+
         .gallery-item {
-            text-align: center; /* 让简介文本居中 */
+            text-align: center;
+            /* 让简介文本居中 */
             position: relative;
-            cursor: pointer; /* 鼠标悬停变为手形 */
+            cursor: pointer;
+            /* 鼠标悬停变为手形 */
         }
+
         .gallery-caption {
             margin-top: 10px;
             font-size: 16px;
-            color: #7f8c8d; /* 设置简介文本颜色 */
+            color: #7f8c8d;
+            /* 设置简介文本颜色 */
             padding: 10px;
             border-radius: 5px;
-            background-color: #f0f0f0; /* 设置背景颜色 */
+            background-color: #f0f0f0;
+            /* 设置背景颜色 */
             transition: background-color 0.3s ease;
         }
+
         .gallery-caption:hover {
-            background-color: #e0e0e0; /* 悬停时改变背景颜色 */
+            background-color: #e0e0e0;
+            /* 悬停时改变背景颜色 */
         }
 
         /* 大图模态框样式 */
         .modal {
-            display: none; /* 初始隐藏 */
+            display: none;
+            /* 初始隐藏 */
             position: fixed;
             z-index: 1001;
             left: 0;
@@ -139,12 +174,14 @@
             justify-content: center;
             align-items: center;
         }
+
         .modal img {
             max-width: 90%;
             max-height: 90%;
             border-radius: 8px;
             box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
         }
+
         .close {
             position: absolute;
             top: 20px;
@@ -155,6 +192,7 @@
             cursor: pointer;
             transition: color 0.3s ease;
         }
+
         .close:hover {
             color: #e74c3c;
         }
@@ -164,6 +202,7 @@
             padding: 60px 20px;
             background-color: #ffffff;
         }
+
         .videos h2 {
             text-align: center;
             font-family: 'Montserrat', sans-serif;
@@ -171,23 +210,26 @@
             margin-bottom: 40px;
             color: #2c3e50;
         }
+
         .video-container {
             display: flex;
             flex-wrap: wrap;
             gap: 20px;
             justify-content: center;
         }
+
         .video-container iframe {
             width: 560px;
             height: 315px;
             border: none;
             border-radius: 10px;
-            box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
             transition: transform 0.3s ease, box-shadow 0.3s ease;
         }
+
         .video-container iframe:hover {
             transform: scale(1.03);
-            box-shadow: 0 8px 16px rgba(0,0,0,0.2);
+            box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
         }
 
         /* 页脚部分 */
@@ -197,29 +239,35 @@
             text-align: center;
             padding: 30px 20px;
         }
+
         footer p {
             margin-bottom: 10px;
             font-size: 16px;
         }
+
         footer a {
             color: #e74c3c;
             font-weight: 600;
             transition: color 0.3s ease;
         }
+
         footer a:hover {
             color: #c0392b;
         }
+
         footer .social-icons {
             margin-top: 10px;
             display: flex;
             justify-content: center;
             gap: 15px;
         }
+
         footer .social-icons a {
             color: #ecf0f1;
             font-size: 20px;
             transition: color 0.3s ease;
         }
+
         footer .social-icons a:hover {
             color: #e74c3c;
         }
@@ -231,21 +279,26 @@
                 align-items: flex-start;
                 padding: 20px;
             }
+
             nav {
                 flex-wrap: wrap;
                 gap: 10px;
                 margin-top: 10px;
             }
+
             .video-container iframe {
                 width: 100%;
                 height: auto;
             }
+
             .gallery-grid {
-                grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); /* 自适应调整 */
+                grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+                /* 自适应调整 */
             }
         }
     </style>
 </head>
+
 <body>
 
     <!-- 头部 -->
@@ -264,8 +317,8 @@
         <img src="./static/avatar.jpg" alt="avatar">
         <h2>George Harvey Lawrence</h2>
         <p>
-            An amateur & growing photography enthusiast. 
-            Hope to capture daily moments, natural light and simple beauty through my lens, 
+            An amateur & growing photography enthusiast.
+            Hope to capture daily moments, natural light and simple beauty through my lens,
             and convey the warmth and beauty of life.
         </p>
     </section>
@@ -273,6 +326,7 @@
     <!-- 作品集 -->
     <section class="gallery" id="gallery">
         <h2>Photography</h2>
+        <h3>City</h3>
         <div class="gallery-grid">
             <div class="gallery-item" onclick="openModal('./photo/1.webp')">
                 <img src="./photo/1.webp" alt="photo work1">
@@ -282,21 +336,17 @@
                 <img src="./photo/2.webp" alt="photo work2">
                 <div class="gallery-caption">Yuzhong District, Chongqing</div>
             </div>
-            <div class="gallery-item" onclick="openModal('./photo/3.webp')">
-                <img src="./photo/3.webp" alt="photo work3">
-                <div class="gallery-caption">Iris</div>
+            <div class="gallery-item" onclick="openModal('./photo/11.webp')">
+                <img src="./photo/11.webp" alt="photo work11">
+                <div class="gallery-caption">Library of Chongqing University, Autumn</div>
+            </div>
+            <div class="gallery-item" onclick="openModal('./photo/12.webp')">
+                <img src="./photo/12.webp" alt="photo work12">
+                <div class="gallery-caption">Playground of Chongqing University</div>
             </div>
             <div class="gallery-item" onclick="openModal('./photo/4.webp')">
                 <img src="./photo/4.webp" alt="photo work4">
                 <div class="gallery-caption">Chaotianmen Bridge</div>
-            </div>
-            <div class="gallery-item" onclick="openModal('./photo/5.webp')">
-                <img src="./photo/5.webp" alt="photo work5">
-                <div class="gallery-caption">Yangtze River, Fengjie, Chongqing</div>
-            </div>
-            <div class="gallery-item" onclick="openModal('./photo/6.webp')">
-                <img src="./photo/6.webp" alt="photo work6">
-                <div class="gallery-caption">The Qutang Gorge, Fengjie, Chongqing</div>
             </div>
             <div class="gallery-item" onclick="openModal('./photo/7.webp')">
                 <img src="./photo/7.webp" alt="photo work7">
@@ -309,22 +359,6 @@
             <div class="gallery-item" onclick="openModal('./photo/9.webp')">
                 <img src="./photo/9.webp" alt="photo work9">
                 <div class="gallery-caption">Library of Chongqing University</div>
-            </div>
-            <div class="gallery-item" onclick="openModal('./photo/10.webp')">
-                <img src="./photo/10.webp" alt="photo work10">
-                <div class="gallery-caption">White-cheeked Babbler</div>
-            </div>
-            <div class="gallery-item" onclick="openModal('./photo/11.webp')">
-                <img src="./photo/11.webp" alt="photo work11">
-                <div class="gallery-caption">Library of Chongqing University, Autumn</div>
-            </div>
-            <div class="gallery-item" onclick="openModal('./photo/12.webp')">
-                <img src="./photo/12.webp" alt="photo work12">
-                <div class="gallery-caption">Playground of Chongqing University</div>
-            </div>
-            <div class="gallery-item" onclick="openModal('./photo/13.webp')">
-                <img src="./photo/13.webp" alt="photo work13">
-                <div class="gallery-caption">Moon, Night</div>
             </div>
             <div class="gallery-item" onclick="openModal('./photo/14.webp')">
                 <img src="./photo/14.webp" alt="photo work14">
@@ -350,9 +384,54 @@
                 <img src="./photo/19.webp" alt="photo work19">
                 <div class="gallery-caption">Summer of Chongqing University</div>
             </div>
+        </div>
+        <h3>Landscape&Nature</h3>
+        <div class="gallery-grid">
+            <div class="gallery-item" onclick="openModal('./photo/5.webp')">
+                <img src="./photo/5.webp" alt="photo work5">
+                <div class="gallery-caption">Yangtze River, Fengjie, Chongqing</div>
+            </div>
+            <div class="gallery-item" onclick="openModal('./photo/6.webp')">
+                <img src="./photo/6.webp" alt="photo work6">
+                <div class="gallery-caption">The Qutang Gorge, Fengjie, Chongqing</div>
+            </div>
+            <div class="gallery-item" onclick="openModal('./photo/13.webp')">
+                <img src="./photo/13.webp" alt="photo work13">
+                <div class="gallery-caption">Moon, Night</div>
+            </div>
+        </div>
+        <h3>Plant</h3>
+        <div class="gallery-grid">
+            <div class="gallery-item" onclick="openModal('./photo/3.webp')">
+                <img src="./photo/3.webp" alt="photo work3">
+                <div class="gallery-caption">Iris</div>
+            </div>
+            <div class="gallery-item" onclick="openModal('./photo/21.webp')">
+                <img src="./photo/21.webp" alt="photo work21">
+                <div class="gallery-caption">Purple-leaf Plum Blossom</div>
+            </div>
+            <div class="gallery-item" onclick="openModal('./photo/22.webp')">
+                <img src="./photo/22.webp" alt="photo work22">
+                <div class="gallery-caption">Grass</div>
+            </div>
+            <div class="gallery-item" onclick="openModal('./photo/24.webp')">
+                <img src="./photo/24.webp" alt="photo work24">
+                <div class="gallery-caption">Sakura Blossom</div>
+            </div>
+        </div>
+        <h3>Animal</h3>
+        <div class="gallery-grid">
+            <div class="gallery-item" onclick="openModal('./photo/10.webp')">
+                <img src="./photo/10.webp" alt="photo work10">
+                <div class="gallery-caption">White-cheeked Babbler</div>
+            </div>
             <div class="gallery-item" onclick="openModal('./photo/20.webp')">
                 <img src="./photo/20.webp" alt="photo work20">
                 <div class="gallery-caption">Little Black Swan</div>
+            </div>
+            <div class="gallery-item" onclick="openModal('./photo/23.webp')">
+                <img src="./photo/23.webp" alt="photo work23">
+                <div class="gallery-caption">Egret</div>
             </div>
         </div>
     </section>
@@ -367,8 +446,10 @@
     <section class="videos" id="videos">
         <h2>Video</h2>
         <div class="video-container">
-            <iframe src="//player.bilibili.com/player.html?bvid=BV1x94y1J7tR&page=1&autoplay=0" scrolling="no" allowfullscreen="true"></iframe>
-            <iframe src="//player.bilibili.com/player.html?bvid=BV1sk4y1g7oT&page=1&autoplay=0" scrolling="no" allowfullscreen="true"></iframe>
+            <iframe src="//player.bilibili.com/player.html?bvid=BV1x94y1J7tR&page=1&autoplay=0" scrolling="no"
+                allowfullscreen="true"></iframe>
+            <iframe src="//player.bilibili.com/player.html?bvid=BV1sk4y1g7oT&page=1&autoplay=0" scrolling="no"
+                allowfullscreen="true"></iframe>
         </div>
     </section>
 
@@ -404,4 +485,5 @@
         });
     </script>
 </body>
+
 </html>
