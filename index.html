@@ -1,0 +1,399 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Personal photography exhibition - Inspired by linksphotograph(Ji Changyuan) and Hamada Hideaki">
+    <title>Photograph</title>
+    <link href="./static/css/css2.css" rel="stylesheet">
+    <link rel="stylesheet" href="./static/css/all.min.css">
+    <style>
+        /* 全局样式 */
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+        body {
+            font-family: 'Roboto', sans-serif;
+            background-color: #fafafa;
+            color: #333;
+            line-height: 1.6;
+        }
+        a {
+            color: inherit;
+            text-decoration: none;
+        }
+        img {
+            max-width: 100%;
+            display: block;
+            border-radius: 8px;
+        }
+
+        /* 头部样式 */
+        header {
+            background-color: #ffffff;
+            padding: 20px 50px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+        header h1 {
+            font-family: 'Montserrat', sans-serif;
+            font-size: 28px;
+            color: #2c3e50;
+        }
+        nav {
+            display: flex;
+            gap: 20px;
+        }
+        nav a {
+            font-weight: 600;
+            color: #555;
+            transition: color 0.3s ease;
+        }
+        nav a:hover {
+            color: #e74c3c;
+        }
+
+        /* 个人简介部分 */
+        .bio {
+            text-align: center;
+            padding: 60px 20px;
+            background-color: #ffffff;
+            display: flex;
+            flex-direction: column; /* 设置为列方向 */
+            align-items: center; /* 让内容居中对齐 */
+        }
+        .bio img {
+            border-radius: 50%;
+            width: 150px;
+            height: 150px;
+            object-fit: cover;
+            margin-bottom: 20px;
+            border: 4px solid #e74c3c;
+        }
+        .bio h2 {
+            font-family: 'Montserrat', sans-serif;
+            font-size: 32px;
+            margin-bottom: 10px;
+            color: #2c3e50;
+        }
+        .bio p {
+            font-size: 18px;
+            color: #7f8c8d;
+            max-width: 600px;
+            margin: 0 auto;
+        }
+
+        /* 作品集部分 */
+        .gallery {
+            padding: 60px 20px;
+            background-color: #f9f9f9;
+        }
+        .gallery h2 {
+            text-align: center;
+            font-family: 'Montserrat', sans-serif;
+            font-size: 32px;
+            margin-bottom: 40px;
+            color: #2c3e50;
+        }
+        .gallery-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr); /* 每行展示4张图片 */
+            gap: 20px;
+        }
+        .gallery-item {
+            text-align: center; /* 让简介文本居中 */
+            position: relative;
+            cursor: pointer; /* 鼠标悬停变为手形 */
+        }
+        .gallery-caption {
+            margin-top: 10px;
+            font-size: 16px;
+            color: #7f8c8d; /* 设置简介文本颜色 */
+            padding: 10px;
+            border-radius: 5px;
+            background-color: #f0f0f0; /* 设置背景颜色 */
+            transition: background-color 0.3s ease;
+        }
+        .gallery-caption:hover {
+            background-color: #e0e0e0; /* 悬停时改变背景颜色 */
+        }
+
+        /* 大图模态框样式 */
+        .modal {
+            display: none; /* 初始隐藏 */
+            position: fixed;
+            z-index: 1001;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            overflow: auto;
+            background-color: rgba(0, 0, 0, 0.8);
+            justify-content: center;
+            align-items: center;
+        }
+        .modal img {
+            max-width: 90%;
+            max-height: 90%;
+            border-radius: 8px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+        }
+        .close {
+            position: absolute;
+            top: 20px;
+            right: 30px;
+            color: white;
+            font-size: 28px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: color 0.3s ease;
+        }
+        .close:hover {
+            color: #e74c3c;
+        }
+
+        /* 视频展示部分 */
+        .videos {
+            padding: 60px 20px;
+            background-color: #ffffff;
+        }
+        .videos h2 {
+            text-align: center;
+            font-family: 'Montserrat', sans-serif;
+            font-size: 32px;
+            margin-bottom: 40px;
+            color: #2c3e50;
+        }
+        .video-container {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 20px;
+            justify-content: center;
+        }
+        .video-container iframe {
+            width: 560px;
+            height: 315px;
+            border: none;
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+        .video-container iframe:hover {
+            transform: scale(1.03);
+            box-shadow: 0 8px 16px rgba(0,0,0,0.2);
+        }
+
+        /* 页脚部分 */
+        footer {
+            background-color: #2c3e50;
+            color: #ecf0f1;
+            text-align: center;
+            padding: 30px 20px;
+        }
+        footer p {
+            margin-bottom: 10px;
+            font-size: 16px;
+        }
+        footer a {
+            color: #e74c3c;
+            font-weight: 600;
+            transition: color 0.3s ease;
+        }
+        footer a:hover {
+            color: #c0392b;
+        }
+        footer .social-icons {
+            margin-top: 10px;
+            display: flex;
+            justify-content: center;
+            gap: 15px;
+        }
+        footer .social-icons a {
+            color: #ecf0f1;
+            font-size: 20px;
+            transition: color 0.3s ease;
+        }
+        footer .social-icons a:hover {
+            color: #e74c3c;
+        }
+
+        /* 响应式调整 */
+        @media (max-width: 768px) {
+            header {
+                flex-direction: column;
+                align-items: flex-start;
+                padding: 20px;
+            }
+            nav {
+                flex-wrap: wrap;
+                gap: 10px;
+                margin-top: 10px;
+            }
+            .video-container iframe {
+                width: 100%;
+                height: auto;
+            }
+            .gallery-grid {
+                grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); /* 自适应调整 */
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- 头部 -->
+    <header>
+        <h1>Photography by George Harvey Lawrence</h1>
+        <nav>
+            <a href="#about">About me</a>
+            <a href="#gallery">Photography</a>
+            <a href="#videos">Video</a>
+            <a href="#contact">Contact me</a>
+        </nav>
+    </header>
+
+    <!-- 个人简介 -->
+    <section class="bio" id="about">
+        <img src="./static/avatar.jpg" alt="avatar">
+        <h2>George Harvey Lawrence</h2>
+        <p>An amateur, growing photography enthusiast. Hope to capture daily moments, natural light and simple beauty through my lens, and convey the warmth and beauty of life.</p>
+    </section>
+
+    <!-- 作品集 -->
+    <section class="gallery" id="gallery">
+        <h2>Photography</h2>
+        <div class="gallery-grid">
+            <div class="gallery-item" onclick="openModal('./photo/1.jpg')">
+                <img src="./photo/1.jpg" alt="photo work1">
+                <div class="gallery-caption">Yuzhong District, Chungking</div>
+            </div>
+            <div class="gallery-item" onclick="openModal('./photo/2.jpg')">
+                <img src="./photo/2.jpg" alt="photo work2">
+                <div class="gallery-caption">Yuzhong District, Chongqing</div>
+            </div>
+            <div class="gallery-item" onclick="openModal('./photo/3.jpg')">
+                <img src="./photo/3.jpg" alt="photo work3">
+                <div class="gallery-caption">Iris</div>
+            </div>
+            <div class="gallery-item" onclick="openModal('./photo/4.jpg')">
+                <img src="./photo/4.jpg" alt="photo work4">
+                <div class="gallery-caption">Chaotianmen Bridge</div>
+            </div>
+            <div class="gallery-item" onclick="openModal('./photo/5.jpg')">
+                <img src="./photo/5.jpg" alt="photo work5">
+                <div class="gallery-caption">Yangtze River, Fengjie, Chongqing</div>
+            </div>
+            <div class="gallery-item" onclick="openModal('./photo/6.jpg')">
+                <img src="./photo/6.jpg" alt="photo work6">
+                <div class="gallery-caption">The Qutang Gorge, Fengjie, Chongqing</div>
+            </div>
+            <div class="gallery-item" onclick="openModal('./photo/7.jpg')">
+                <img src="./photo/7.jpg" alt="photo work7">
+                <div class="gallery-caption">Hong'en Temple</div>
+            </div>
+            <div class="gallery-item" onclick="openModal('./photo/8.jpg')">
+                <img src="./photo/8.jpg" alt="photo work8">
+                <div class="gallery-caption">Hong'en Temple</div>
+            </div>
+            <div class="gallery-item" onclick="openModal('./photo/9.jpg')">
+                <img src="./photo/9.jpg" alt="photo work9">
+                <div class="gallery-caption">Library of Chongqing University</div>
+            </div>
+            <div class="gallery-item" onclick="openModal('./photo/10.jpg')">
+                <img src="./photo/10.jpg" alt="photo work10">
+                <div class="gallery-caption">White-cheeked Babbler</div>
+            </div>
+            <div class="gallery-item" onclick="openModal('./photo/11.jpg')">
+                <img src="./photo/11.jpg" alt="photo work11">
+                <div class="gallery-caption">Library of Chongqing University, Autumn</div>
+            </div>
+            <div class="gallery-item" onclick="openModal('./photo/12.jpg')">
+                <img src="./photo/12.jpg" alt="photo work12">
+                <div class="gallery-caption">Playground of Chongqing University</div>
+            </div>
+            <div class="gallery-item" onclick="openModal('./photo/13.jpg')">
+                <img src="./photo/13.jpg" alt="photo work13">
+                <div class="gallery-caption">Moon, Night</div>
+            </div>
+            <div class="gallery-item" onclick="openModal('./photo/14.jpg')">
+                <img src="./photo/14.jpg" alt="photo work14">
+                <div class="gallery-caption">Library of Chongqing University, Spring</div>
+            </div>
+            <div class="gallery-item" onclick="openModal('./photo/15.jpg')">
+                <img src="./photo/15.jpg" alt="photo work15">
+                <div class="gallery-caption">Old Building, Chongqing</div>
+            </div>
+            <div class="gallery-item" onclick="openModal('./photo/16.jpg')">
+                <img src="./photo/16.jpg" alt="photo work16">
+                <div class="gallery-caption">Avenue, Chongqing University</div>
+            </div>
+            <div class="gallery-item" onclick="openModal('./photo/17.jpg')">
+                <img src="./photo/17.jpg" alt="photo work17">
+                <div class="gallery-caption">Overlook, Chongqing University</div>
+            </div>
+            <div class="gallery-item" onclick="openModal('./photo/18.jpg')">
+                <img src="./photo/18.jpg" alt="photo work18">
+                <div class="gallery-caption">Autumn of Classroom D1314, Chongqing University</div>
+            </div>
+            <div class="gallery-item" onclick="openModal('./photo/19.jpg')">
+                <img src="./photo/19.jpg" alt="photo work19">
+                <div class="gallery-caption">Summer of Chongqing University</div>
+            </div>
+        </div>
+    </section>
+
+    <!-- 大图模态框 -->
+    <div id="modal" class="modal">
+        <span class="close" onclick="closeModal()">&times;</span>
+        <img id="modal-image" src="" alt="大图展示">
+    </div>
+
+    <!-- 视频展示 -->
+    <section class="videos" id="videos">
+        <h2>Video</h2>
+        <div class="video-container">
+            <iframe src="//player.bilibili.com/player.html?bvid=BV1x94y1J7tR&page=1&autoplay=0" scrolling="no" allowfullscreen="true"></iframe>
+            <iframe src="//player.bilibili.com/player.html?bvid=BV1sk4y1g7oT&page=1&autoplay=0" scrolling="no" allowfullscreen="true"></iframe>
+        </div>
+    </section>
+
+    <!-- 页脚 -->
+    <footer id="contact">
+        <p>&copy; George Harvey Lawrence. All rights reserved.</p>
+        <p>Contact me: <a href="mailto:georgeghl@qq.com">georgeghl@qq.com</a></p>
+        <!-- <div class="social-icons">
+            <a href="https://www.instagram.com/yourprofile" target="_blank"><i class="fab fa-instagram"></i></a>
+            <a href="https://www.weibo.com/yourprofile" target="_blank"><i class="fab fa-weibo"></i></a>
+        </div> -->
+    </footer>
+
+    <script>
+        function openModal(imageSrc) {
+            const modal = document.getElementById('modal');
+            const modalImage = document.getElementById('modal-image');
+            modalImage.src = imageSrc;
+            modal.style.display = 'flex'; // 使用flex布局
+        }
+
+        function closeModal() {
+            const modal = document.getElementById('modal');
+            modal.style.display = 'none';
+        }
+
+        // 点击模态框外部区域时关闭模态框
+        const modal = document.getElementById('modal');
+        modal.addEventListener('click', function (event) {
+            if (event.target === modal) {
+                closeModal();
+            }
+        });
+    </script>
+</body>
+</html>
