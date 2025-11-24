@@ -1,0 +1,1021 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Personal photography exhibition - Inspired by linksphotograph and Hamada Hideaki">
+    <link rel="shortcut icon" href="./static/favicon.ico">
+    <title>Photography - George Harvey Lawrence</title>
+    <link href="./static/css/css2.css" rel="stylesheet">
+    <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: 'Roboto', sans-serif;
+            background-color: transparent;
+            color: #333;
+            line-height: 1.6;
+            position: relative;
+            overflow-x: hidden;
+
+
+        }
+
+        a {
+            color: inherit;
+            text-decoration: none;
+        }
+
+        img {
+            max-width: 100%;
+            display: block;
+            border-radius: 8px;
+        }
+
+        /* 视频背景 */
+        /* 视频背景 + 顶级磨砂玻璃特效（强烈推荐） */
+        .background-video {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
+            overflow: hidden;
+            z-index: -10;
+        }
+
+        .background-video::before {
+            content: "";
+            position: absolute;
+            inset: 0;
+            /* 更简洁的写法 = top:0 left:0 right:0 bottom:0 */
+            background: rgba(255, 255, 255, 0.15);
+            /* 亮背景更清晰 */
+            backdrop-filter: blur(12px) saturate(160%);
+            -webkit-backdrop-filter: blur(12px) saturate(160%);
+            z-index: -9;
+            pointer-events: none;
+        }
+
+        .background-video video {
+            min-width: 100%;
+            min-height: 100%;
+            width: auto;
+            height: auto;
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            object-fit: cover;
+        }
+
+        header {
+            background: linear-gradient(180deg, rgba(255, 255, 255, 0.3), rgba(255, 255, 255, 0.2));
+            padding: 15px 30px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+            min-height: 50px;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+            backdrop-filter: blur(15px);
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        header h1 {
+            font-family: 'Montserrat', sans-serif;
+            font-size: 20px;
+            color: #2c3e50;
+            letter-spacing: 1px;
+        }
+
+        @media (min-width: 768px) {
+            header h1 {
+                font-size: 24px;
+            }
+        }
+
+        .nav-menu {
+            display: flex;
+            gap: 20px;
+        }
+
+        .nav-menu a {
+            font-family: 'Roboto', sans-serif;
+            font-size: 16px;
+            font-weight: 400;
+            color: #282828;
+            position: relative;
+            transition: color 0.3s ease;
+            padding: 5px 10px;
+        }
+
+        .nav-menu a:hover {
+            color: #e74c3c;
+        }
+
+        .nav-menu a::after {
+            content: '';
+            position: absolute;
+            width: 0;
+            height: 2px;
+            bottom: 0;
+            left: 0;
+            background-color: #e74c3c;
+            transition: width 0.3s ease;
+        }
+
+        .nav-menu a:hover::after {
+            width: 100%;
+        }
+
+        .nav-menu a.active {
+            color: #e74c3c;
+            font-weight: 600;
+        }
+
+        .hamburger {
+            display: none;
+            flex-direction: column;
+            justify-content: space-between;
+            width: 30px;
+            height: 20px;
+            background: none;
+            border: none;
+            cursor: pointer;
+            padding: 0;
+            z-index: 1001;
+        }
+
+        .hamburger span {
+            width: 100%;
+            height: 3px;
+            background-color: #282828;
+            transition: all 0.3s ease;
+        }
+
+        @media (max-width: 768px) {
+
+            /* 关键1：把 header 改成相对定位，让菜单能基于它往下推开内容 */
+            header {
+                position: relative;
+                z-index: 1001;
+                /* 确保在菜单上面 */
+            }
+
+            /* 关键2：菜单不再是 absolute，而是 fixed + 从顶部弹出，彻底不影响下面内容 */
+            .nav-menu {
+                position: fixed !important;
+                top: 0;
+                /* 从屏幕顶部开始 */
+                left: 0;
+                right: 0;
+                height: 100vh;
+                /* 占满全屏 */
+                background: rgba(248, 250, 252, 0.95);
+                backdrop-filter: blur(24px) saturate(180%);
+                -webkit-backdrop-filter: blur(24px) saturate(180%);
+                box-shadow: 0 10px 40px rgba(0, 0, 0, 0.2);
+                display: flex;
+                flex-direction: column;
+                justify-content: center;
+                align-items: center;
+                gap: 28px;
+                padding: 20px;
+                z-index: 1000;
+                opacity: 0;
+                visibility: hidden;
+                transform: translateY(-20px);
+                transition: all 0.4s cubic-bezier(0.22, 1, 0.36, 1);
+            }
+
+            /* 关键3：展开时显示在正中间，超美观 */
+            .nav-menu.active {
+                opacity: 1;
+                visibility: visible;
+                transform: translateY(0);
+            }
+
+            .nav-menu a {
+                font-size: 26px !important;
+                font-weight: 500;
+                color: #222 !important;
+                padding: 12px 0;
+                transition: all 0.3s ease;
+            }
+
+            .nav-menu a:hover {
+                color: #e74c3c !important;
+                transform: scale(1.1);
+            }
+
+            /* 可选：给菜单后面的内容加一点模糊，视觉层次更强 */
+            .nav-menu.active~.bio,
+            .nav-menu.active~.gallery,
+            .nav-menu.active~.videos,
+            .nav-menu.active~.panoramas {
+                filter: blur(40px);
+                transition: filter 0.4s ease;
+            }
+
+            .hamburger {
+                display: flex;
+            }
+
+            .hamburger.active span:nth-child(1) {
+                transform: rotate(45deg) translate(5px, 5px);
+            }
+
+            .hamburger.active span:nth-child(2) {
+                opacity: 0;
+            }
+
+            .hamburger.active span:nth-child(3) {
+                transform: rotate(-45deg) translate(7px, -7px);
+            }
+        }
+
+        html {
+            scroll-behavior: smooth;
+        }
+
+        .glass-effect {
+            background: rgba(255, 255, 255, 0.2);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 15px;
+            margin: 40px auto;
+            padding: 40px 20px;
+            max-width: 1200px;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        .glass-effect:hover {
+            transform: scale(1.01);
+            box-shadow: 0 8px 16px rgba(0, 0, 0, 0.1);
+        }
+
+        .bio {
+            text-align: center;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        .bio img {
+            border-radius: 50%;
+            width: 150px;
+            height: 150px;
+            object-fit: cover;
+            margin-bottom: 20px;
+            border: 4px solid #e74c3c;
+        }
+
+        .bio h2 {
+            font-family: 'Montserrat', sans-serif;
+            font-size: 32px;
+            margin-bottom: 10px;
+            color: #282828;
+        }
+
+        .bio p {
+            font-size: 18px;
+            color: #282828;
+            max-width: 600px;
+            margin: 0 auto;
+        }
+
+        .gallery h2,
+        .videos h2,
+        .panoramas h2 {
+            text-align: center;
+            font-family: 'Montserrat', sans-serif;
+            font-size: 32px;
+            margin-bottom: 40px;
+            color: #2c3e50;
+        }
+
+        .gallery h3 {
+            text-align: center;
+            font-family: 'Montserrat', sans-serif;
+            font-size: 20px;
+            margin: 30px 0;
+            color: #2c3e50;
+        }
+
+        .gallery-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 20px;
+        }
+
+        .gallery-item {
+            text-align: center;
+            position: relative;
+            cursor: pointer;
+        }
+
+        .gallery-caption {
+            margin-top: 10px;
+            font-size: 16px;
+            color: #282828;
+            padding: 10px;
+            border-radius: 5px;
+            background: rgba(240, 240, 240, 0.5);
+            backdrop-filter: blur(5px);
+            transition: background-color 0.3s ease;
+        }
+
+        .gallery-caption:hover {
+            background: rgba(224, 224, 224, 0.5);
+        }
+
+        /* 2 & 3. 完全重做大图查看器（放大缩小按钮 + 关闭按钮完美层级与位置） */
+        .modal {
+            display: none;
+            position: fixed;
+            z-index: 2000;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.92);
+            justify-content: center;
+            align-items: center;
+            padding: 40px;
+            box-sizing: border-box;
+        }
+
+        .modal.active {
+            display: flex;
+        }
+
+        .modal img {
+            max-width: 96%;
+            max-height: 96%;
+            border-radius: 12px;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.8);
+            transition: transform 0.35s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+            user-select: none;
+        }
+
+        /* 关闭按钮（在图片最上层） */
+        .close {
+            position: fixed;
+            top: 24px;
+            right: 30px;
+            color: #fff;
+            font-size: 42px;
+            font-weight: 300;
+            cursor: pointer;
+            z-index: 2010;
+            width: 56px;
+            height: 56px;
+            background: rgba(255, 0, 0, 0.4);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            backdrop-filter: blur(10px);
+            transition: all 0.3s ease;
+        }
+
+        .close:hover {
+            background: rgba(231, 76, 60, 0.9);
+            transform: scale(1.15);
+        }
+
+        /* 放大缩小按钮（固定在右下角，永远在图片上面） */
+        .modal-controls {
+            position: fixed;
+            right: 30px;
+            bottom: 30px;
+            z-index: 2010;
+            display: flex;
+            gap: 12px;
+        }
+
+        .modal-controls button {
+            width: 56px;
+            height: 56px;
+            background: rgba(255, 255, 255, 0.22);
+            color: white;
+            border: none;
+            border-radius: 50%;
+            font-size: 26px;
+            cursor: pointer;
+            backdrop-filter: blur(12px);
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
+            transition: all 0.3s ease;
+        }
+
+        .modal-controls button:hover {
+            background: rgba(255, 255, 255, 0.35);
+            transform: scale(1.15);
+        }
+
+
+
+        .video-container,
+        .panorama-container {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 20px;
+            justify-content: center;
+        }
+
+        .video-container iframe,
+        .panorama-container iframe {
+            width: 560px;
+            height: 315px;
+            max-width: 100%;
+            border: none;
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        .video-container iframe:hover,
+        .panorama-container iframe:hover {
+            transform: scale(1.03);
+            box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+        }
+
+        footer {
+            background: rgba(44, 62, 80, 0.8);
+            backdrop-filter: blur(5px);
+            color: #ecf0f1;
+            text-align: center;
+            padding: 5px;
+            position: relative;
+            z-index: 1;
+        }
+
+        footer p {
+            margin-bottom: 5px;
+            font-size: 15px;
+        }
+
+        footer a {
+            color: #e74c3c;
+            font-weight: 600;
+        }
+
+        footer a:hover {
+            color: #c0392b;
+        }
+
+        @media (max-width: 768px) {
+            .gallery-grid {
+                grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            }
+
+            .glass-effect {
+                margin: 10px;
+                padding: 30px 10px;
+            }
+
+            .video-container iframe,
+            .panorama-container iframe {
+                width: 100%;
+                height: auto;
+            }
+        }
+
+        /* 1. 修复音乐按钮图标（完美居中 + 动画更流畅） */
+        #music-toggle {
+            position: fixed;
+            right: 24px;
+            bottom: 24px;
+            width: 64px;
+            height: 64px;
+            background: rgba(231, 76, 60, 0.96);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            z-index: 999;
+            box-shadow: 0 6px 25px rgba(0, 0, 0, 0.45);
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            backdrop-filter: blur(12px);
+            border: 3px solid rgba(255, 255, 255, 0.35);
+        }
+
+        #music-toggle:hover {
+            transform: scale(1.15);
+            background: #e74c3c;
+            box-shadow: 0 10px 35px rgba(231, 76, 60, 0.5);
+        }
+
+        #music-toggle svg {
+            width: 32px;
+            height: 32px;
+            transition: transform 0.4s ease;
+        }
+
+        #music-toggle:hover svg {
+            transform: rotate(12deg) scale(1.1);
+        }
+
+        #music-toggle .playing {
+            display: block;
+        }
+
+        #music-toggle .paused {
+            display: none;
+        }
+
+        #music-toggle.paused .playing {
+            display: none;
+        }
+
+        #music-toggle.paused .paused {
+            display: block;
+        }
+
+        /* ==================== 终极全屏磨砂背景（彻底解决左右空白） ==================== */
+        .frosted-global {
+            position: relative;
+        }
+
+        /* 全屏固定背景容器 */
+        .frosted-global::before {
+            content: "";
+            position: fixed;
+            /* 改用 fixed，彻底覆盖全屏 */
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
+            background: rgba(255, 255, 255, 0.16);
+            /* 稍微加深一点，更均匀 */
+            backdrop-filter: blur(2px) saturate(170%);
+            /* 磨砂核心 */
+            -webkit-backdrop-filter: blur(13px) saturate(170%);
+            z-index: -10;
+            pointer-events: none;
+        }
+
+        /* 背景视频（保持原来的 fixed 定位） */
+        .background-video {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
+            overflow: hidden;
+            z-index: -11;
+            /* 比磨砂层更低，确保视频在最底层 */
+        }
+
+        .background-video video {
+            min-width: 100%;
+            min-height: 100%;
+            width: auto;
+            height: auto;
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            object-fit: cover;
+        }
+
+        /* 可选：让所有 glass-effect 卡片更通透，与全局磨砂融合更自然 */
+        .glass-effect {
+            background: rgba(255, 255, 255, 0.22) !important;
+            /* 原来是 0.2，稍微加一点白 */
+            border: 1px solid rgba(255, 255, 255, 0.18) !important;
+        }
+    </style>
+</head>
+
+<body class="frosted-global">
+
+    <!-- 背景视频 -->
+    <div class="background-video ">
+        <video autoplay muted loop playsinline id="bg-video"></video>
+    </div>
+
+    <!-- 背景音乐 -->
+    <audio id="bg-music" loop></audio>
+
+    <!-- 音乐控制按钮（SVG 图标） -->
+<div id="music-toggle" title="点击暂停/播放背景音乐">
+    <svg viewBox="0 0 100 100">
+        <!-- 播放中：三角形播放按钮 -->
+        <g class="playing">
+            <path d="M 38,25 L 75,50 L 38,75 Z" fill="white"/>
+            <!-- 小圆点装饰（可选，增加活力） -->
+            <circle cx="78" cy="22" r="8" fill="#e74c3c">
+                <animate attributeName="opacity" values="0.4;1;0.4" dur="1.8s" repeatCount="indefinite"/>
+            </circle>
+        </g>
+
+        <!-- 暂停：经典双竖条 -->
+        <g class="paused">
+            <rect x="34" y="22" width="14" height="56" rx="7" fill="white"/>
+            <rect x="52" y="22" width="14" height="56" rx="7" fill="white"/>
+        </g>
+    </svg>
+</div>
+
+    <!-- 头部 -->
+    <header>
+        <h1>Photography</h1>
+        <nav class="nav-menu">
+            <a href="#about">About</a>
+            <a href="#gallery">Photography</a>
+            <a href="#videos">Video</a>
+            <a href="#panoramas">Pano&VR</a>
+            <a href="#contact">Contact</a>
+        </nav>
+        <button class="hamburger" aria-label="Toggle navigation">
+            <span></span><span></span><span></span>
+        </button>
+    </header>
+
+    <!-- 个人简介 -->
+    <section class="bio glass-effect" id="about">
+        <img src="./static/avatar.jpg" alt="avatar">
+        <h2>George Harvey Lawrence</h2>
+        <p>
+            An amateur & growing photography enthusiast.<br>
+            Hope to capture daily moments, natural light and simple beauty through my lens,<br>
+            and convey the warmth and beauty of life.
+        </p>
+    </section>
+
+    <!-- 作品集 -->
+    <section class="gallery glass-effect" id="gallery">
+        <h2>Photography</h2>
+        <h3>City</h3>
+        <div class="gallery-grid">
+            <div class="gallery-item" onclick="openModal('./photo/1.webp')">
+                <img src="./photo/1.webp" alt="photo work1">
+                <div class="gallery-caption">Yuzhong District, Chungking</div>
+            </div>
+            <div class="gallery-item" onclick="openModal('./photo/2.webp')">
+                <img src="./photo/2.webp" alt="photo work2">
+                <div class="gallery-caption">Yuzhong District, Chongqing</div>
+            </div>
+            <div class="gallery-item" onclick="openModal('./photo/11.webp')">
+                <img src="./photo/11.webp" alt="photo work11">
+                <div class="gallery-caption">Library of Chongqing University, Huxi Campus, Autumn</div>
+            </div>
+            <div class="gallery-item" onclick="openModal('./photo/12.webp')">
+                <img src="./photo/12.webp" alt="photo work12">
+                <div class="gallery-caption">Playground of Chongqing University, Huxi Campus</div>
+            </div>
+            <div class="gallery-item" onclick="openModal('./photo/4.webp')">
+                <img src="./photo/4.webp" alt="photo work4">
+                <div class="gallery-caption">Chaotianmen Bridge</div>
+            </div>
+            <div class="gallery-item" onclick="openModal('./photo/7.webp')">
+                <img src="./photo/7.webp" alt="photo work7">
+                <div class="gallery-caption">Hong'en Temple</div>
+            </div>
+            <div class="gallery-item" onclick="openModal('./photo/8.webp')">
+                <img src="./photo/8.webp" alt="photo work8">
+                <div class="gallery-caption">Hong'en Temple</div>
+            </div>
+            <div class="gallery-item" onclick="openModal('./photo/9.webp')">
+                <img src="./photo/9.webp" alt="photo work9">
+                <div class="gallery-caption">Library of Chongqing University, Huxi Campus</div>
+            </div>
+            <div class="gallery-item" onclick="openModal('./photo/14.webp')">
+                <img src="./photo/14.webp" alt="photo work14">
+                <div class="gallery-caption">Library of Chongqing University, Huxi Campus, Spring</div>
+            </div>
+            <div class="gallery-item" onclick="openModal('./photo/15.webp')">
+                <img src="./photo/15.webp" alt="photo work15">
+                <div class="gallery-caption">Old Building, Haitangxi, Chongqing</div>
+            </div>
+            <div class="gallery-item" onclick="openModal('./photo/16.webp')">
+                <img src="./photo/16.webp" alt="photo work16">
+                <div class="gallery-caption">Gingko Avenue, Chongqing University, Huxi Campus</div>
+            </div>
+            <div class="gallery-item" onclick="openModal('./photo/17.webp')">
+                <img src="./photo/17.webp" alt="photo work17">
+                <div class="gallery-caption">Overlook, Chongqing University, Huxi Campus</div>
+            </div>
+            <div class="gallery-item" onclick="openModal('./photo/18.webp')">
+                <img src="./photo/18.webp" alt="photo work18">
+                <div class="gallery-caption">Autumn of Classroom D1314, Chongqing University, Huxi Campus</div>
+            </div>
+            <div class="gallery-item" onclick="openModal('./photo/19.webp')">
+                <img src="./photo/19.webp" alt="photo work19">
+                <div class="gallery-caption">Summer of Chongqing University, Huxi Campus</div>
+            </div>
+            <div class="gallery-item" onclick="openModal('./photo/25.webp')">
+                <img src="./photo/25.webp" alt="photo work25">
+                <div class="gallery-caption">Winter of Hefei University of Technology, South Campus(Tunxi Road)</div>
+            </div>
+            <div class="gallery-item" onclick="openModal('./photo/34.webp')">
+                <img src="./photo/34.webp" alt="photo work34">
+                <div class="gallery-caption">Summer of Hefei University of Technology, South Campus(Tunxi Road)</div>
+            </div>
+            <div class="gallery-item" onclick="openModal('./photo/35.webp')">
+                <img src="./photo/35.webp" alt="photo work35">
+                <div class="gallery-caption">Summer of Hefei University of Technology, South Campus(Tunxi Road)</div>
+            </div>
+            <div class="gallery-item" onclick="openModal('./photo/26.webp')">
+                <img src="./photo/26.webp" alt="photo work26">
+                <div class="gallery-caption">Symmetry</div>
+            </div>
+            <div class="gallery-item" onclick="openModal('./photo/27.webp')">
+                <img src="./photo/27.webp" alt="photo work27">
+                <div class="gallery-caption">Summer of Chongqing University, Shapingba District, Chongqing</div>
+            </div>
+            <div class="gallery-item" onclick="openModal('./photo/30.webp')">
+                <img src="./photo/30.webp" alt="photo work30">
+                <div class="gallery-caption">Gingko Avenue, Chongqing University, Huxi Campus</div>
+            </div>
+            <div class="gallery-item" onclick="openModal('./photo/31.webp')">
+                <img src="./photo/31.webp" alt="photo work31">
+                <div class="gallery-caption">Gingko Avenue, Chongqing University, Huxi Campus</div>
+            </div>
+            <div class="gallery-item" onclick="openModal('./photo/32.webp')">
+                <img src="./photo/32.webp" alt="photo work32">
+                <div class="gallery-caption">Gingko Avenue, Chongqing University, Huxi Campus</div>
+            </div>
+            <div class="gallery-item" onclick="openModal('./photo/36.webp')">
+                <img src="./photo/36.webp" alt="photo work36">
+                <div class="gallery-caption">A Small County Town on the Huang-Huai Plain</div>
+            </div>
+            <div class="gallery-item" onclick="openModal('./photo/39.webp')">
+                <img src="./photo/39.webp" alt="photo work39">
+                <div class="gallery-caption">A Small County Town on the Huang-Huai Plain</div>
+            </div>
+        </div>
+
+        <h3>Landscape&Nature</h3>
+        <div class="gallery-grid">
+            <div class="gallery-item" onclick="openModal('./photo/5.webp')">
+                <img src="./photo/5.webp" alt="photo work5">
+                <div class="gallery-caption">Yangtze River, Fengjie, Chongqing</div>
+            </div>
+            <div class="gallery-item" onclick="openModal('./photo/6.webp')">
+                <img src="./photo/6.webp" alt="photo work6">
+                <div class="gallery-caption">The Qutang Gorge, Fengjie, Chongqing</div>
+            </div>
+            <div class="gallery-item" onclick="openModal('./photo/33.webp')">
+                <img src="./photo/33.webp" alt="photo work33">
+                <div class="gallery-caption">Dabie Mountains</div>
+            </div>
+            <div class="gallery-item" onclick="openModal('./photo/13.webp')">
+                <img src="./photo/13.webp" alt="photo work13">
+                <div class="gallery-caption">Moon, Night</div>
+            </div>
+            <div class="gallery-item" onclick="openModal('./photo/37.webp')">
+                <img src="./photo/37.webp" alt="photo work37">
+                <div class="gallery-caption">Moon</div>
+            </div>
+            <div class="gallery-item" onclick="openModal('./photo/38.webp')">
+                <img src="./photo/38.webp" alt="photo work38">
+                <div class="gallery-caption">Lunar Eclipse</div>
+            </div>
+        </div>
+
+        <h3>Plant</h3>
+        <div class="gallery-grid">
+            <div class="gallery-item" onclick="openModal('./photo/3.webp')">
+                <img src="./photo/3.webp" alt="photo work3">
+                <div class="gallery-caption">Iris</div>
+            </div>
+            <div class="gallery-item" onclick="openModal('./photo/21.webp')">
+                <img src="./photo/21.webp" alt="photo work21">
+                <div class="gallery-caption">Purple-leaf Plum Blossom</div>
+            </div>
+            <div class="gallery-item" onclick="openModal('./photo/22.webp')">
+                <img src="./photo/22.webp" alt="photo work22">
+                <div class="gallery-caption">Grass</div>
+            </div>
+            <div class="gallery-item" onclick="openModal('./photo/24.webp')">
+                <img src="./photo/24.webp" alt="photo work24">
+                <div class="gallery-caption">Sakura Blossom</div>
+            </div>
+        </div>
+
+        <h3>Animal</h3>
+        <div class="gallery-grid">
+            <div class="gallery-item" onclick="openModal('./photo/10.webp')">
+                <img src="./photo/10.webp" alt="photo work10">
+                <div class="gallery-caption">White-cheeked Babbler</div>
+            </div>
+            <div class="gallery-item" onclick="openModal('./photo/20.webp')">
+                <img src="./photo/20.webp" alt="photo work20">
+                <div class="gallery-caption">Little Black Swan</div>
+            </div>
+            <div class="gallery-item" onclick="openModal('./photo/23.webp')">
+                <img src="./photo/23.webp" alt="photo work23">
+                <div class="gallery-caption">Egret</div>
+            </div>
+            <div class="gallery-item" onclick="openModal('./photo/28.webp')">
+                <img src="./photo/28.webp" alt="photo work28">
+                <div class="gallery-caption">Kingfisher</div>
+            </div>
+            <div class="gallery-item" onclick="openModal('./photo/29.webp')">
+                <img src="./photo/29.webp" alt="photo work29">
+                <div class="gallery-caption">Cat</div>
+            </div>
+        </div>
+
+        <h3>AI Generated</h3>
+        <div class="gallery-grid">
+            <div class="gallery-item" onclick="openModal('./photo/2_2.webp')">
+                <img src="./photo/2_2.webp" alt="photo work2_2">
+                <div class="gallery-caption">Yuzhong District, Chongqing</div>
+            </div>
+            <div class="gallery-item" onclick="openModal('./photo/42.webp')">
+                <img src="./photo/42.webp" alt="photo work42">
+                <div class="gallery-caption">Summer of Chongqing University, Shapingba District, Chongqing</div>
+            </div>
+            <div class="gallery-item" onclick="openModal('./photo/41.webp')">
+                <img src="./photo/41.webp" alt="photo work41">
+                <div class="gallery-caption">Summer of Hefei University of Technology, South Campus(Tunxi Road)</div>
+            </div>
+            <div class="gallery-item" onclick="openModal('./photo/40.webp')">
+                <img src="./photo/40.webp" alt="photo work40">
+                <div class="gallery-caption">Summer of Hefei University of Technology, South Campus(Tunxi Road)</div>
+            </div>
+        </div>
+    </section>
+
+    <!-- 大图模态框 -->
+    <div id="modal" class="modal">
+        <span class="close" onclick="closeModal()">×</span>
+        <img id="modal-image" src="" alt="largeImage">
+        <div class="modal-controls">
+            <button id="zoom-out">-</button>
+            <button id="zoom-in">+</button>
+        </div>
+    </div>
+
+    <!-- 视频展示 -->
+    <section class="videos glass-effect" id="videos">
+        <h2>Video</h2>
+        <div class="video-container">
+            <iframe src="//player.bilibili.com/player.html?bvid=BV1x94y1J7tR&page=1&autoplay=0" scrolling="no"
+                allowfullscreen="true"></iframe>
+            <iframe src="//player.bilibili.com/player.html?bvid=BV1sk4y1g7oT&page=1&autoplay=0" scrolling="no"
+                allowfullscreen="true"></iframe>
+        </div>
+    </section>
+
+    <section class="panoramas glass-effect" id="panoramas">
+        <h2>VR Video</h2>
+        <div class="video-container">
+            <iframe
+                src="//player.bilibili.com/player.html?isOutside=true&&autoplay=0aid=114779175786301&bvid=BV1hZ3nzWEtZ&cid=30799299952&p=1"
+                scrolling="no" border="0" frameborder="no" framespacing="0" allowfullscreen="true"></iframe>
+            <iframe
+                src="//player.bilibili.com/player.html?isOutside=true&autoplay=0&aid=114784527717947&bvid=BV1bj38zVEfh&cid=30816665821&p=1"
+                scrolling="no" border="0" frameborder="no" framespacing="0" allowfullscreen="true"></iframe>
+        </div>
+        <h2 style="margin-top: 50px;">Panorama&VR</h2>
+        <div class="panorama-container">
+            <a class="vr_href" href="https://georgeghl.github.io/StaticImageWebsite/MyPanoramaViewer/"> 💎 Panorama
+                VR Site 💎 </a>
+        </div>
+        <div class="panorama-container">
+            <a class="vr_href" href="https://georgeghl.github.io/StaticImageWebsite/VRTour_CQU/"> 💎 Chongqing
+                University VR 💎 </a>
+        </div>
+        <div class="panorama-container">
+            <a class="vr_href" href="https://georgeghl.github.io/StaticImageWebsite/VRTour_CQUHuxi/"> 💎 Chongqing
+                University Huxi Campus VR 💎 </a>
+        </div>
+    </section>
+
+    <!-- 页脚 -->
+    <footer id="contact">
+        <p>2025 © George Harvey Lawrence. All rights reserved.</p>
+        <p>Contact me: <a href="mailto:georgeghl@qq.com">georgeghl@qq.com</a></p>
+    </footer>
+
+    <script>
+        /* ==================== 1. 背景视频 + 全局磨砂（已完美）=================== */
+        const videoList = [];
+        document.getElementById('bg-video').src = videoList[Math.floor(Math.random() * videoList.length)];
+
+        /* ==================== 2. 背景音乐自动播放（静音启动法，100%成功） ==================== */
+        const musicList = [
+            './music/A Flower Is Not a Flower.mp3',
+            './music/Amore.mp3',
+            './music/Epilogue.mp3',
+            './music/Lost Theme.mp3',
+            './music/Prologue.mp3',
+            './music/Summer Ghost.mp3',
+            './music/かなかなしぐれ.mp3'
+        ];
+        const bgMusic = document.getElementById('bg-music');
+        const musicToggle = document.getElementById('music-toggle');
+
+        bgMusic.src = musicList[Math.floor(Math.random() * musicList.length)];
+
+        // 关键：先静音启动，再恢复音量（兼容所有浏览器与手机）
+        bgMusic.volume = 0;
+        bgMusic.play().then(() => {
+            setTimeout(() => bgMusic.volume = 0.3, 200);
+        }).catch(() => {
+            // 极少数失败时等用户第一次点击
+            const unlock = () => {
+                bgMusic.volume = 0.3;
+                bgMusic.play();
+                document.body.removeEventListener('click', unlock);
+            };
+            document.body.addEventListener('click', unlock, { once: true });
+        });
+
+        musicToggle.addEventListener('click', () => {
+            if (bgMusic.paused) {
+                bgMusic.play();
+                musicToggle.classList.remove('paused');
+            } else {
+                bgMusic.pause();
+                musicToggle.classList.add('paused');
+            }
+        });
+
+        /* ==================== 3. 全新大图查看器（修复所有问题） ==================== */
+        const modal = document.getElementById('modal');
+        const modalImg = document.getElementById('modal-image');
+        let scale = 1;
+
+        function openModal(src) {
+            modal.classList.add('active');
+            modalImg.src = src;
+            scale = 1;
+            modalImg.style.transform = 'scale(1)';
+            document.body.style.overflow = 'hidden';   // 禁止背景滚动
+        }
+
+        function closeModal() {
+            modal.classList.remove('active');
+            document.body.style.overflow = '';
+        }
+
+        // 放大
+        document.getElementById('zoom-in').onclick = (e) => {
+            e.stopPropagation();
+            scale += 0.3;
+            modalImg.style.transform = `scale(${scale})`;
+        };
+
+        // 缩小
+        document.getElementById('zoom-out').onclick = (e) => {
+            e.stopPropagation();
+            scale = Math.max(0.3, scale - 0.3);
+            modalImg.style.transform = `scale(${scale})`;
+        };
+
+        // 滚轮缩放
+        modalImg.onwheel = (e) => {
+            e.preventDefault();
+            scale += e.deltaY < 0 ? 0.2 : -0.2;
+            scale = Math.max(0.3, scale);
+            modalImg.style.transform = `scale(${scale})`;
+        };
+
+        // 点击背景关闭（不点图片区域）
+        modal.onclick = (e) => {
+            if (e.target === modal) closeModal();
+        };
+
+        /* ==================== 4. 汉堡菜单 & 导航高亮（保持你原来的逻辑） ==================== */
+        const hamburger = document.querySelector('.hamburger');
+        const navMenu = document.querySelector('.nav-menu');
+        hamburger.onclick = () => {
+            hamburger.classList.toggle('active');
+            navMenu.classList.toggle('active');
+        };
+        document.querySelectorAll('.nav-menu a').forEach(link => {
+            link.onclick = () => {
+                hamburger.classList.remove('active');
+                navMenu.classList.remove('active');
+            };
+        });
+
+        window.onscroll = () => {
+            let current = '';
+            document.querySelectorAll('section').forEach(sec => {
+                if (window.scrollY >= sec.offsetTop - 120) current = sec.id;
+            });
+            document.querySelectorAll('.nav-menu a').forEach(a => {
+                a.classList.toggle('active', a.getAttribute('href') === `#${current}`);
+            });
+        };
+
+
+    </script>
+</body>
+
+</html>

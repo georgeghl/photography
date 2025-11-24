@@ -1,0 +1,859 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Personal photography exhibition - Inspired by linksphotograph and Hamada Hideaki">
+    <link rel="shortcut icon" href="./static/favicon.ico">
+    <title>Photography - George Harvey Lawrence</title>
+    <link href="./static/css/css2.css" rel="stylesheet">
+    <link rel="stylesheet" href="./static/css/all.min.css">
+    <style>
+        /* 全局样式 */
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: 'Roboto', sans-serif;
+            background-color: #fafafa;
+            color: #333;
+            line-height: 1.6;
+        }
+
+        a {
+            color: inherit;
+            text-decoration: none;
+        }
+
+        img {
+            max-width: 100%;
+            display: block;
+            border-radius: 8px;
+        }
+
+        /* 头部样式 */
+        header {
+            background: linear-gradient(180deg, rgba(255, 255, 255, 0.95), rgba(255, 255, 255, 0.8));
+            padding: 15px 30px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+            min-height: 50px;
+            /* 替换固定高度 */
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+            backdrop-filter: blur(5px);
+        }
+
+        header h1 {
+            font-family: 'Montserrat', sans-serif;
+            font-size: 20px;
+            color: #2c3e50;
+            letter-spacing: 1px;
+        }
+
+        @media (min-width: 768px) {
+            header h1 {
+                font-size: 24px;
+                /* 大屏幕上更突出 */
+            }
+        }
+
+        .nav-menu {
+            display: flex;
+            gap: 20px;
+        }
+
+        .nav-menu a {
+            font-family: 'Roboto', sans-serif;
+            font-size: 16px;
+            font-weight: 400;
+            color: #555;
+            position: relative;
+            transition: color 0.3s ease;
+            padding: 5px 10px;
+        }
+
+        .nav-menu a:hover {
+            color: #e74c3c;
+        }
+
+        .nav-menu a::after {
+            content: '';
+            position: absolute;
+            width: 0;
+            height: 2px;
+            bottom: 0;
+            left: 0;
+            background-color: #e74c3c;
+            transition: width 0.3s ease;
+        }
+
+        .nav-menu a:hover::after {
+            width: 100%;
+        }
+
+        .nav-menu a.active {
+            color: #e74c3c;
+            font-weight: 600;
+        }
+
+        /* 汉堡菜单按钮 */
+        .hamburger {
+            display: none;
+            flex-direction: column;
+            justify-content: space-between;
+            width: 30px;
+            height: 20px;
+            background: none;
+            border: none;
+            cursor: pointer;
+            padding: 0;
+            z-index: 1001;
+        }
+
+        .hamburger span {
+            width: 100%;
+            height: 3px;
+            background-color: #2c3e50;
+            transition: all 0.3s ease;
+        }
+
+        /* 响应式设计 */
+        @media (max-width: 768px) {
+            header {
+                padding: 10px 20px;
+                flex-wrap: wrap;
+                position: relative;
+            }
+
+            .nav-menu {
+                display: none;
+                position: absolute;
+                top: 100%;
+                left: 0;
+                right: 0;
+                flex-direction: column;
+                gap: 15px;
+                padding: 20px;
+                background-color: rgba(255, 255, 255, 0.95);
+                box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+                z-index: 1000;
+                transition: transform 0.3s ease, opacity 0.3s ease;
+                transform: translateY(-10px);
+                opacity: 0;
+            }
+
+            .nav-menu.active {
+                display: flex;
+                transform: translateY(0);
+                opacity: 1;
+            }
+
+            .nav-menu a {
+                padding: 12px;
+                font-size: 18px;
+                text-align: center;
+            }
+
+            .hamburger {
+                display: flex;
+            }
+
+            .hamburger.active span:nth-child(1) {
+                transform: rotate(45deg) translate(5px, 5px);
+            }
+
+            .hamburger.active span:nth-child(2) {
+                opacity: 0;
+            }
+
+            .hamburger.active span:nth-child(3) {
+                transform: rotate(-45deg) translate(7px, -7px);
+            }
+        }
+
+        /* 平滑滚动 */
+        html {
+            scroll-behavior: smooth;
+        }
+
+        /* 个人简介部分 */
+        .bio {
+            text-align: center;
+            padding: 60px 20px;
+            background-color: #ffffff;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        .bio img {
+            border-radius: 50%;
+            width: 150px;
+            height: 150px;
+            object-fit: cover;
+            margin-bottom: 20px;
+            border: 4px solid #e74c3c;
+        }
+
+        .bio h2 {
+            font-family: 'Montserrat', sans-serif;
+            font-size: 32px;
+            margin-bottom: 10px;
+            color: #2c3e50;
+        }
+
+        .bio p {
+            font-size: 18px;
+            color: #7f8c8d;
+            max-width: 600px;
+            margin: 0 auto;
+        }
+
+        /* 作品集部分 */
+        .gallery {
+            padding: 60px 20px;
+            background-color: #f9f9f9;
+        }
+
+        .gallery h2 {
+            text-align: center;
+            font-family: 'Montserrat', sans-serif;
+            font-size: 32px;
+            margin-bottom: 40px;
+            color: #2c3e50;
+        }
+
+        .gallery h3 {
+            text-align: center;
+            font-family: 'Montserrat', sans-serif;
+            font-size: 20px;
+            margin-bottom: 30px;
+            margin-top: 30px;
+            color: #2c3e50;
+        }
+
+        .gallery-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 20px;
+        }
+
+        .gallery-item {
+            text-align: center;
+            position: relative;
+            cursor: pointer;
+        }
+
+        .gallery-caption {
+            margin-top: 10px;
+            font-size: 16px;
+            color: #7f8c8d;
+            padding: 10px;
+            border-radius: 5px;
+            background-color: #f0f0f0;
+            transition: background-color 0.3s ease;
+        }
+
+        .gallery-caption:hover {
+            background-color: #e0e0e0;
+        }
+
+        /* 大图模态框样式 */
+        .modal {
+            display: none;
+            position: fixed;
+            z-index: 1001;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            overflow: auto;
+            background-color: rgba(0, 0, 0, 0.8);
+            justify-content: center;
+            align-items: center;
+        }
+
+        .modal img {
+            max-width: 90%;
+            max-height: 90%;
+            border-radius: 8px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+            transition: transform 0.3s ease;
+        }
+
+        .close {
+            position: absolute;
+            top: 20px;
+            right: 30px;
+            color: white;
+            font-size: 28px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: color 0.3s ease;
+        }
+
+        .close:hover {
+            color: #e74c3c;
+        }
+
+        .modal-controls {
+            position: absolute;
+            bottom: 20px;
+            right: 20px;
+            display: flex;
+            gap: 10px;
+        }
+
+        .modal-controls button {
+            background: rgba(255, 255, 255, 0.7);
+            border: none;
+            padding: 10px 15px;
+            font-size: 20px;
+            cursor: pointer;
+            border-radius: 5px;
+            transition: background 0.3s ease;
+        }
+
+        .modal-controls button:hover {
+            background: rgba(255, 255, 255, 1);
+        }
+
+        /* 视频展示部分 */
+        .videos {
+            padding: 60px 20px;
+            background-color: #ffffff;
+        }
+
+        .videos h2 {
+            text-align: center;
+            font-family: 'Montserrat', sans-serif;
+            font-size: 32px;
+            margin-bottom: 40px;
+            color: #2c3e50;
+        }
+
+        .video-container {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 20px;
+            justify-content: center;
+        }
+
+        .video-container iframe {
+            width: 560px;
+            height: 315px;
+            border: none;
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        .video-container iframe:hover {
+            transform: scale(1.03);
+            box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+        }
+
+        /* 全景图和VR部分 */
+        .panoramas {
+            padding: 60px 20px;
+            background-color: #ffffff;
+        }
+
+        .panoramas h2 {
+            text-align: center;
+            font-family: 'Montserrat', sans-serif;
+            font-size: 32px;
+            margin-bottom: 40px;
+            color: #2c3e50;
+        }
+
+        .panoramas-container {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 20px;
+            justify-content: center;
+        }
+
+        .panoramas-container iframe {
+            width: 560px;
+            height: 315px;
+            border: none;
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        .panoramas-container iframe:hover {
+            transform: scale(1.03);
+            box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+        }
+
+        .panoramas a {
+            text-align: center;
+            font-family: 'Montserrat', sans-serif;
+            font-size: 22px;
+            margin-bottom: 40px;
+            color: #2c3e50;
+        }
+
+        .panorama-container {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 20px;
+            justify-content: center;
+        }
+
+        .panorama-container iframe {
+            width: 560px;
+            height: 315px;
+            border: none;
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        .panorama-container iframe:hover {
+            transform: scale(1.03);
+            box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+        }
+
+        /* 页脚部分 */
+        footer {
+            background-color: #2c3e50;
+            color: #ecf0f1;
+            text-align: center;
+            padding: 5px 5px;
+        }
+
+        footer p {
+            margin-bottom: 5px;
+            font-size: 15px;
+        }
+
+        footer a {
+            color: #e74c3c;
+            font-weight: 600;
+            transition: color 0.3s ease;
+        }
+
+        footer a:hover {
+            color: #c0392b;
+        }
+
+        footer .social-icons {
+            margin-top: 5px;
+            display: flex;
+            justify-content: center;
+            gap: 5px;
+        }
+
+        footer .social-icons a {
+            color: #ecf0f1;
+            font-size: 10px;
+            transition: color 0.3s ease;
+        }
+
+        footer .social-icons a:hover {
+            color: #e74c3c;
+        }
+
+        /* 响应式调整 */
+        @media (max-width: 768px) {
+            .video-container iframe {
+                width: 100%;
+                height: auto;
+            }
+
+            .gallery-grid {
+                grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <!-- 头部 -->
+    <header>
+        <h1>Photography</h1>
+        <nav class="nav-menu">
+            <a href="#about">About</a>
+            <a href="#gallery">Photography</a>
+            <a href="#videos">Video</a>
+            <a href="#panoramas">Pano&VR</a>
+            <a href="#contact">Contact</a>
+        </nav>
+        <button class="hamburger" aria-label="Toggle navigation">
+            <span></span>
+            <span></span>
+            <span></span>
+        </button>
+    </header>
+
+    <!-- 个人简介 -->
+    <section class="bio" id="about">
+        <img src="./static/avatar.jpg" alt="avatar">
+        <h2>George Harvey Lawrence</h2>
+        <p>
+            An amateur & growing photography enthusiast.
+            Hope to capture daily moments, natural light and simple beauty through my lens,
+            and convey the warmth and beauty of life.
+        </p>
+    </section>
+
+    <!-- 作品集 -->
+    <section class="gallery" id="gallery">
+        <h2>Photography</h2>
+        <h3>City</h3>
+        <div class="gallery-grid">
+            <div class="gallery-item" onclick="openModal('./photo/1.webp')">
+                <img src="./photo/1.webp" alt="photo work1">
+                <div class="gallery-caption">Yuzhong District, Chungking</div>
+            </div>
+            <div class="gallery-item" onclick="openModal('./photo/2.webp')">
+                <img src="./photo/2.webp" alt="photo work2">
+                <div class="gallery-caption">Yuzhong District, Chongqing</div>
+            </div>
+            <div class="gallery-item" onclick="openModal('./photo/11.webp')">
+                <img src="./photo/11.webp" alt="photo work11">
+                <div class="gallery-caption">Library of Chongqing University, Huxi Campus, Autumn</div>
+            </div>
+            <div class="gallery-item" onclick="openModal('./photo/12.webp')">
+                <img src="./photo/12.webp" alt="photo work12">
+                <div class="gallery-caption">Playground of Chongqing University, Huxi Campus</div>
+            </div>
+            <div class="gallery-item" onclick="openModal('./photo/4.webp')">
+                <img src="./photo/4.webp" alt="photo work4">
+                <div class="gallery-caption">Chaotianmen Bridge</div>
+            </div>
+            <div class="gallery-item" onclick="openModal('./photo/7.webp')">
+                <img src="./photo/7.webp" alt="photo work7">
+                <div class="gallery-caption">Hong'en Temple</div>
+            </div>
+            <div class="gallery-item" onclick="openModal('./photo/8.webp')">
+                <img src="./photo/8.webp" alt="photo work8">
+                <div class="gallery-caption">Hong'en Temple</div>
+            </div>
+            <div class="gallery-item" onclick="openModal('./photo/9.webp')">
+                <img src="./photo/9.webp" alt="photo work9">
+                <div class="gallery-caption">Library of Chongqing University, Huxi Campus</div>
+            </div>
+            <div class="gallery-item" onclick="openModal('./photo/14.webp')">
+                <img src="./photo/14.webp" alt="photo work14">
+                <div class="gallery-caption">Library of Chongqing University, Huxi Campus, Spring</div>
+            </div>
+            <div class="gallery-item" onclick="openModal('./photo/15.webp')">
+                <img src="./photo/15.webp" alt="photo work15">
+                <div class="gallery-caption">Old Building, Haitangxi, Chongqing</div>
+            </div>
+            <div class="gallery-item" onclick="openModal('./photo/16.webp')">
+                <img src="./photo/16.webp" alt="photo work16">
+                <div class="gallery-caption">Gingko Avenue, Chongqing University, Huxi Campus</div>
+            </div>
+            <div class="gallery-item" onclick="openModal('./photo/17.webp')">
+                <img src="./photo/17.webp" alt="photo work17">
+                <div class="gallery-caption">Overlook, Chongqing University, Huxi Campus</div>
+            </div>
+            <div class="gallery-item" onclick="openModal('./photo/18.webp')">
+                <img src="./photo/18.webp" alt="photo work18">
+                <div class="gallery-caption">Autumn of Classroom D1314, Chongqing University, Huxi Campus</div>
+            </div>
+            <div class="gallery-item" onclick="openModal('./photo/19.webp')">
+                <img src="./photo/19.webp" alt="photo work19">
+                <div class="gallery-caption">Summer of Chongqing University, Huxi Campus</div>
+            </div>
+            <div class="gallery-item" onclick="openModal('./photo/25.webp')">
+                <img src="./photo/25.webp" alt="photo work25">
+                <div class="gallery-caption">Winter of Hefei University of Technology, South Campus(Tunxi Road)</div>
+            </div>
+            <div class="gallery-item" onclick="openModal('./photo/34.webp')">
+                <img src="./photo/34.webp" alt="photo work34">
+                <div class="gallery-caption">Summer of Hefei University of Technology, South Campus(Tunxi Road)</div>
+            </div>
+            <div class="gallery-item" onclick="openModal('./photo/35.webp')">
+                <img src="./photo/35.webp" alt="photo work35">
+                <div class="gallery-caption">Summer of Hefei University of Technology, South Campus(Tunxi Road)</div>
+            </div>
+            <div class="gallery-item" onclick="openModal('./photo/26.webp')">
+                <img src="./photo/26.webp" alt="photo work26">
+                <div class="gallery-caption">Symmetry</div>
+            </div>
+            <div class="gallery-item" onclick="openModal('./photo/27.webp')">
+                <img src="./photo/27.webp" alt="photo work27">
+                <div class="gallery-caption">Summer of Chongqing University, Shapingba District, Chongqing</div>
+            </div>
+            <div class="gallery-item" onclick="openModal('./photo/30.webp')">
+                <img src="./photo/30.webp" alt="photo work30">
+                <div class="gallery-caption">Gingko Avenue, Chongqing University, Huxi Campus</div>
+            </div>
+            <div class="gallery-item" onclick="openModal('./photo/31.webp')">
+                <img src="./photo/31.webp" alt="photo work31">
+                <div class="gallery-caption">Gingko Avenue, Chongqing University, Huxi Campus</div>
+            </div>
+            <div class="gallery-item" onclick="openModal('./photo/32.webp')">
+                <img src="./photo/32.webp" alt="photo work32">
+                <div class="gallery-caption">Gingko Avenue, Chongqing University, Huxi Campus</div>
+            </div>
+            <div class="gallery-item" onclick="openModal('./photo/36.webp')">
+                <img src="./photo/36.webp" alt="photo work36">
+                <div class="gallery-caption">A Small County Town on the Huang-Huai Plain</div>
+            </div>
+            <div class="gallery-item" onclick="openModal('./photo/39.webp')">
+                <img src="./photo/39.webp" alt="photo work39">
+                <div class="gallery-caption">A Small County Town on the Huang-Huai Plain</div>
+            </div>
+        </div>
+
+        <h3>Landscape&Nature</h3>
+        <div class="gallery-grid">
+            <div class="gallery-item" onclick="openModal('./photo/5.webp')">
+                <img src="./photo/5.webp" alt="photo work5">
+                <div class="gallery-caption">Yangtze River, Fengjie, Chongqing</div>
+            </div>
+            <div class="gallery-item" onclick="openModal('./photo/6.webp')">
+                <img src="./photo/6.webp" alt="photo work6">
+                <div class="gallery-caption">The Qutang Gorge, Fengjie, Chongqing</div>
+            </div>
+            <div class="gallery-item" onclick="openModal('./photo/33.webp')">
+                <img src="./photo/33.webp" alt="photo work33">
+                <div class="gallery-caption">Dabie Mountains</div>
+            </div>
+            <div class="gallery-item" onclick="openModal('./photo/13.webp')">
+                <img src="./photo/13.webp" alt="photo work13">
+                <div class="gallery-caption">Moon, Night</div>
+            </div>
+            <div class="gallery-item" onclick="openModal('./photo/37.webp')">
+                <img src="./photo/37.webp" alt="photo work37">
+                <div class="gallery-caption">Moon</div>
+            </div>
+            <div class="gallery-item" onclick="openModal('./photo/38.webp')">
+                <img src="./photo/38.webp" alt="photo work38">
+                <div class="gallery-caption">Lunar Eclipse</div>
+            </div>
+        </div>
+        <h3>Plant</h3>
+        <div class="gallery-grid">
+            <div class="gallery-item" onclick="openModal('./photo/3.webp')">
+                <img src="./photo/3.webp" alt="photo work3">
+                <div class="gallery-caption">Iris</div>
+            </div>
+            <div class="gallery-item" onclick="openModal('./photo/21.webp')">
+                <img src="./photo/21.webp" alt="photo work21">
+                <div class="gallery-caption">Purple-leaf Plum Blossom</div>
+            </div>
+            <div class="gallery-item" onclick="openModal('./photo/22.webp')">
+                <img src="./photo/22.webp" alt="photo work22">
+                <div class="gallery-caption">Grass</div>
+            </div>
+            <div class="gallery-item" onclick="openModal('./photo/24.webp')">
+                <img src="./photo/24.webp" alt="photo work24">
+                <div class="gallery-caption">Sakura Blossom</div>
+            </div>
+        </div>
+        <h3>Animal</h3>
+        <div class="gallery-grid">
+            <div class="gallery-item" onclick="openModal('./photo/10.webp')">
+                <img src="./photo/10.webp" alt="photo work10">
+                <div class="gallery-caption">White-cheeked Babbler</div>
+            </div>
+            <div class="gallery-item" onclick="openModal('./photo/20.webp')">
+                <img src="./photo/20.webp" alt="photo work20">
+                <div class="gallery-caption">Little Black Swan</div>
+            </div>
+            <div class="gallery-item" onclick="openModal('./photo/23.webp')">
+                <img src="./photo/23.webp" alt="photo work23">
+                <div class="gallery-caption">Egret</div>
+            </div>
+            <div class="gallery-item" onclick="openModal('./photo/28.webp')">
+                <img src="./photo/28.webp" alt="photo work28">
+                <div class="gallery-caption">Kingfisher</div>
+            </div>
+            <div class="gallery-item" onclick="openModal('./photo/29.webp')">
+                <img src="./photo/29.webp" alt="photo work29">
+                <div class="gallery-caption">Cat</div>
+            </div>
+        </div>
+        <h3>AI Generated</h3>
+        <div class="gallery-grid">
+            <div class="gallery-item" onclick="openModal('./photo/2_2.webp')">
+                <img src="./photo/2_2.webp" alt="photo work2_2">
+                <div class="gallery-caption">Yuzhong District, Chongqing</div>
+            </div>
+            <div class="gallery-item" onclick="openModal('./photo/42.webp')">
+                <img src="./photo/42.webp" alt="photo work42">
+                <div class="gallery-caption">Summer of Chongqing University, Shapingba District, Chongqing</div>
+            </div>
+            <div class="gallery-item" onclick="openModal('./photo/41.webp')">
+                <img src="./photo/41.webp" alt="photo work41">
+                <div class="gallery-caption">Summer of Hefei University of Technology, South Campus(Tunxi Road)</div>
+            </div>
+            <div class="gallery-item" onclick="openModal('./photo/40.webp')">
+                <img src="./photo/40.webp" alt="photo work40">
+                <div class="gallery-caption">Summer of Hefei University of Technology, South Campus(Tunxi Road)</div>
+            </div>
+        </div>
+    </section>
+
+    <!-- 大图模态框 -->
+    <div id="modal" class="modal">
+        <span class="close" onclick="closeModal()">&times;</span>
+        <img id="modal-image" src="" alt="largeImage">
+        <div class="modal-controls">
+            <button id="zoom-out">-</button>
+            <button id="zoom-in">+</button>
+        </div>
+    </div>
+
+    <!-- 视频展示 -->
+    <section class="videos" id="videos">
+        <h2>Video</h2>
+        <div class="video-container">
+            <iframe src="//player.bilibili.com/player.html?bvid=BV1x94y1J7tR&page=1&autoplay=0" scrolling="no"
+                allowfullscreen="true"></iframe>
+            <iframe src="//player.bilibili.com/player.html?bvid=BV1sk4y1g7oT&page=1&autoplay=0" scrolling="no"
+                allowfullscreen="true"></iframe>
+        </div>
+
+    </section>
+
+    <section class="panoramas" id="panoramas">
+        <h2>VR Video</h2>
+        <div class="video-container">
+            <iframe
+                src="//player.bilibili.com/player.html?isOutside=true&&autoplay=0aid=114779175786301&bvid=BV1hZ3nzWEtZ&cid=30799299952&p=1"
+                scrolling="no" border="0" frameborder="no" framespacing="0" allowfullscreen="true"></iframe>
+            <iframe
+                src="//player.bilibili.com/player.html?isOutside=true&autoplay=0&aid=114784527717947&bvid=BV1bj38zVEfh&cid=30816665821&p=1"
+                scrolling="no" border="0" frameborder="no" framespacing="0" allowfullscreen="true"></iframe>
+        </div>
+        <h2 style="margin-top: 50px;">Panorama&VR</h2>
+        <div class="panorama-container">
+            <a class="vr_href" href="https://georgeghl.github.io/StaticImageWebsite/MyPanoramaViewer/"> &diams; Panorama
+                VR Site &diams; </a>
+        </div>
+        <div class="panorama-container">
+            <a class="vr_href" href="https://georgeghl.github.io/StaticImageWebsite/VRTour_CQU/"> &diams; Chongqing
+                University VR &diams; </a>
+        </div>
+        <div class="panorama-container">
+            <a class="vr_href" href="https://georgeghl.github.io/StaticImageWebsite/VRTour_CQUHuxi/"> &diams; Chongqing
+                University Huxi Campus VR &diams; </a>
+        </div>
+
+    </section>
+
+    <!-- 页脚 -->
+    <footer id="contact">
+        <p>2025 &copy; George Harvey Lawrence. All rights reserved.</p>
+        <p>Contact me: <a href="mailto:georgeghl@qq.com">georgeghl@qq.com</a></p>
+        <!-- <div class="social-icons">
+            <a href="https://www.instagram.com/yourprofile" target="_blank"><i class="fab fa-instagram"></i></a>
+            <a href="https://www.weibo.com/yourprofile" target="_blank"><i class="fab fa-weibo"></i></a>
+        </div> -->
+    </footer>
+
+    <script>
+        // 大图模态框逻辑
+        let scale = 1;
+        const modalImage = document.getElementById('modal-image');
+
+        function openModal(imageSrc) {
+            const modal = document.getElementById('modal');
+            modalImage.src = imageSrc;
+            scale = 1;
+            modalImage.style.transform = `scale(${scale})`;
+            modal.style.display = 'flex';
+        }
+
+        function closeModal() {
+            const modal = document.getElementById('modal');
+            modal.style.display = 'none';
+        }
+
+        function zoomIn() {
+            scale += 0.2;
+            modalImage.style.transform = `scale(${scale})`;
+        }
+
+        function zoomOut() {
+            scale -= 0.2;
+            if (scale < 0.1) scale = 0.1;
+            modalImage.style.transform = `scale(${scale})`;
+        }
+
+        document.getElementById('zoom-in').addEventListener('click', zoomIn);
+        document.getElementById('zoom-out').addEventListener('click', zoomOut);
+
+        modalImage.addEventListener('wheel', (event) => {
+            event.preventDefault();
+            if (event.deltaY < 0) {
+                zoomIn();
+            } else {
+                zoomOut();
+            }
+        });
+
+        const modal = document.getElementById('modal');
+        modal.addEventListener('click', function (event) {
+            if (event.target === modal) {
+                closeModal();
+            }
+        });
+
+        // 汉堡菜单切换
+        const hamburger = document.querySelector('.hamburger');
+        const navMenu = document.querySelector('.nav-menu');
+
+        function toggleMenu() {
+            hamburger.classList.toggle('active');
+            navMenu.classList.toggle('active');
+        }
+
+        hamburger.addEventListener('click', toggleMenu);
+        hamburger.addEventListener('keydown', (event) => {
+            if (event.key === 'Enter' || event.key === ' ') {
+                event.preventDefault();
+                toggleMenu();
+            }
+        });
+
+        // 点击导航链接后关闭菜单
+        navMenu.querySelectorAll('a').forEach(link => {
+            link.addEventListener('click', () => {
+                hamburger.classList.remove('active');
+                navMenu.classList.remove('active');
+            });
+        });
+
+        // 导航高亮
+        window.addEventListener('scroll', () => {
+            const sections = document.querySelectorAll('section');
+            const navLinks = document.querySelectorAll('.nav-menu a');
+
+            let currentSection = '';
+            sections.forEach(section => {
+                const sectionTop = section.offsetTop;
+                const sectionHeight = section.clientHeight;
+                if (window.scrollY >= sectionTop - 60 && window.scrollY < sectionTop + sectionHeight) {
+                    currentSection = section.getAttribute('id');
+                }
+            });
+
+            navLinks.forEach(link => {
+                link.classList.remove('active');
+                if (link.getAttribute('href').slice(1) === currentSection) {
+                    link.classList.add('active');
+                }
+            });
+        });
+    </script>
+</body>
+
+</html>
